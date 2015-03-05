@@ -13,7 +13,7 @@ class OauthService {
 
     String getAccessToken(String authCode) {
 
-        def url = 'http://localhost:8080/ss-test/oauth/token'
+        def url = 'http://localhost:8080/oauth2-provider/oauth/token'
 
         def params = [
                 grant_type: 'authorization_code',
