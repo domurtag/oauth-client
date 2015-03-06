@@ -16,6 +16,9 @@ class OauthService {
         def url = 'http://localhost:8080/oauth2-provider/oauth/token'
 
         def params = [
+                // the scope param is not required by the OAuth spec. it's a workaround for this issue
+                // https://github.com/bluesliverx/grails-spring-security-oauth2-provider/issues/64
+                scope: 'read',
                 grant_type: 'authorization_code',
                 code: authCode,
                 client_id: 'my-client'
