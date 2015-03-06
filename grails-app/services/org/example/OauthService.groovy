@@ -15,8 +15,6 @@ class OauthService {
 
     String getAccessToken(String authCode) {
 
-        def url = 'http://localhost:8080/oauth2-provider/oauth/token'
-
         // a "Redirect URI mismatch" error will occur if the redirect_uri param is omitted, even though
         // we've already been called back by the time this code is invoked
         // https://github.com/bluesliverx/grails-spring-security-oauth2-provider/issues/67
@@ -32,7 +30,9 @@ class OauthService {
                 redirect_uri: callback
         ]
 
-        new HTTPBuilder(url).request(POST, JSON) {
+        def oauthProviderAccessTokenUrl = 'http://localhost:8080/oauth2-provider/oauth/token'
+
+        new HTTPBuilder(oauthProviderAccessTokenUrl).request(POST, JSON) {
             uri.query = params
 
             response.success = { resp, json ->
