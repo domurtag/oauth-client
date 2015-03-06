@@ -7,13 +7,20 @@ import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.Method.POST
-
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 class OauthService {
+
+    LinkGenerator grailsLinkGenerator
 
     String getAccessToken(String authCode) {
 
         def url = 'http://localhost:8080/oauth2-provider/oauth/token'
+
+        // a "Redirect URI mismatch" error will occur if the redirect_uri param is omitted, even though
+        // we've already been called back by the time this code is invoked
+        // https://github.com/bluesliverx/grails-spring-security-oauth2-provider/issues/67
+        def callback = grailsLinkGenerator.link(controller: 'auth', action: 'callback', absolute: true)
 
         def params = [
                 // the scope param is not required by the OAuth spec. it's a workaround for this issue
@@ -21,7 +28,8 @@ class OauthService {
                 scope: 'read',
                 grant_type: 'authorization_code',
                 code: authCode,
-                client_id: 'my-client'
+                client_id: 'my-client',
+                redirect_uri: callback
         ]
 
         new HTTPBuilder(url).request(POST, JSON) {
