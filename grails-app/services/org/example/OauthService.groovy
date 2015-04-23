@@ -2,16 +2,18 @@ package org.example
 
 import groovyx.net.http.HTTPBuilder
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.*
 import static groovyx.net.http.Method.POST
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 class OauthService {
 
     LinkGenerator grailsLinkGenerator
+    GrailsApplication grailsApplication
+
+    @Lazy
+    private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
 
     String getAccessToken(String authCode) {
 
@@ -30,7 +32,8 @@ class OauthService {
                 redirect_uri: callback
         ]
 
-        def oauthProviderAccessTokenUrl = 'http://localhost:8080/oauth2-provider/oauth/token'
+
+        def oauthProviderAccessTokenUrl = "$oauthProvider/oauth/token"
 
         new HTTPBuilder(oauthProviderAccessTokenUrl).request(POST, JSON) {
             uri.query = params

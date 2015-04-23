@@ -109,7 +109,7 @@
 <div id="page-body" role="main">
     <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true)}"/>
     <h2>
-        <a href="http://localhost:8080/oauth2-provider/oauth/authorize?response_type=code&client_id=my-client&scope=read&redirect_uri=${redirectUrl}">OAuth Login</a>
+        <a href="${grailsApplication.config.oauthProvider.baseUrl}/oauth/authorize?response_type=code&client_id=my-client&scope=read&redirect_uri=${redirectUrl}">OAuth Login</a>
     </h2>
 </div>
 </body>
