@@ -8,8 +8,8 @@ class AuthController {
      * The callback action for OAuth2 login
      */
     def callback(String code) {
-        String accessToken = oauthService.getAccessToken(code)
-        session.accessToken = accessToken
-        render text: "Exchanged auth code '$code' for access token '$accessToken'"
+        def response = oauthService.getAccessToken(code)
+        log.info "Exchanged auth code $code for access token $response.access_token"
+        render text: response, contentType: 'application/json'
     }
 }

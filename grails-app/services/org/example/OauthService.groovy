@@ -15,7 +15,7 @@ class OauthService {
     @Lazy
     private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
 
-    String getAccessToken(String authCode) {
+    def getAccessToken(String authCode) {
 
         // a "Redirect URI mismatch" error will occur if the redirect_uri param is omitted, even though
         // we've already been called back by the time this code is invoked
@@ -39,7 +39,7 @@ class OauthService {
             uri.query = params
 
             response.success = { resp, json ->
-                json.access_token
+                json
             }
 
             response.failure = { resp, json ->
