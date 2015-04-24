@@ -125,5 +125,5 @@ log4j.main = {
 }
 
 
-oauthProvider.baseUrl = 'http://localhost:8080/kerp'
-//oauthProvider.baseUrl = 'http://localhost:8080/oauth2-provider'
+//oauthProvider.baseUrl = 'http://localhost:8080/kerp'
+oauthProvider.baseUrl = 'http://localhost:8080/oauth2-provider'

@@ -1,7 +1,5 @@
 package org.example
 
-import groovy.time.*
-
 class AuthController {
 
     OauthService oauthService
