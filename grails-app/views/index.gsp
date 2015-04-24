@@ -111,6 +111,13 @@
     <h2>
         <a href="${grailsApplication.config.oauthProvider.baseUrl}/oauth/authorize?response_type=code&client_id=my-client&scope=read&redirect_uri=${redirectUrl}">OAuth Login</a>
     </h2>
+
+    <g:if test="${session.accessToken}">
+        <oauth:renderToken/>
+    </g:if>
+    <g:else>
+        An access token has not been issued to this client.
+    </g:else>
 </div>
 </body>
 </html>

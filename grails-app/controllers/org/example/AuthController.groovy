@@ -1,5 +1,7 @@
 package org.example
 
+import groovy.time.*
+
 class AuthController {
 
     OauthService oauthService
@@ -8,8 +10,15 @@ class AuthController {
      * The callback action for OAuth2 login
      */
     def callback(String code) {
-        def response = oauthService.getAccessToken(code)
-        log.info "Exchanged auth code $code for access token $response.access_token"
-        render text: response, contentType: 'application/json'
+        def response = oauthService.exchangeAuthCode(code)
+
+        if (response.error) {
+            log.error "Auth code exchange failed: $response"
+        } else {
+            session.accessToken = response
+            log.info "Exchanged auth code $code for access token $response"
+        }
+
+        redirect uri: '/'
     }
 }
