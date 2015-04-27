@@ -17,7 +17,6 @@ class OauthTokenTagLib {
         out << "<h2>Expiration Time</h2>"
 
         use (TimeCategory) {
-            // application on numbers:
             Integer expirySeconds = tokenDetails.expires_in as Integer
             out << expirySeconds.seconds.from.now
         }
@@ -28,8 +27,10 @@ class OauthTokenTagLib {
         out << "<h2>Scope</h2>"
         out << tokenDetails.scope
 
-
         out << "<h2>Token Type</h2>"
         out << tokenDetails.token_type
+
+        out << "<h2>Additional Info: username</h2>"
+        out << tokenDetails.username
     }
 }
