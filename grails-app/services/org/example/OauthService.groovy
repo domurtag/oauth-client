@@ -1,7 +1,6 @@
 package org.example
 
 import groovy.json.JsonSlurper
-import groovyx.net.http.*
 import org.apache.http.HttpResponse
 import org.apache.http.NameValuePair
 import org.apache.http.client.HttpClient
@@ -23,7 +22,7 @@ class OauthService {
     @Lazy
     private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
 
-    private HttpClient httpclient = new DefaultHttpClient()
+    private HttpClient httpClient = new DefaultHttpClient()
 
     /**
      * Exchange an authorization code for an access token
@@ -51,7 +50,7 @@ class OauthService {
         }
 
         httpPost.entity = new UrlEncodedFormEntity(postParams)
-        HttpResponse response = httpclient.execute(httpPost)
+        HttpResponse response = httpClient.execute(httpPost)
 
         try {
             String responseBody = response.entity.content.text
@@ -67,6 +66,6 @@ class OauthService {
 
     @PreDestroy
     private void close() {
-        httpclient.connectionManager.shutdown()
+        httpClient.connectionManager.shutdown()
     }
 }
