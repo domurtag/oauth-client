@@ -19,4 +19,9 @@ class AuthController {
 
         redirect uri: '/'
     }
+
+    def clearToken() {
+        session.removeAttribute('accessToken')
+        redirect uri: '/'
+    }
 }
