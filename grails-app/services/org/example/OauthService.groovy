@@ -21,7 +21,7 @@ class OauthService {
     LinkGenerator grailsLinkGenerator
     GrailsApplication grailsApplication
 
-    private parseWithHttpBuilder = true
+    private parseWithHttpBuilder = false
 
     @Lazy
     private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
