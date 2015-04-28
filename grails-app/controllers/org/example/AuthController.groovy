@@ -4,6 +4,8 @@ class AuthController {
 
     OauthService oauthService
 
+    static allowedMethods = [callback: 'GET', clearToken: 'GET']
+
     /**
      * The callback action for OAuth2 login
      */
