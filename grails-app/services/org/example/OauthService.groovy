@@ -1,6 +1,5 @@
 package org.example
 
-import groovyx.net.http.HTTPBuilder
 import groovy.json.JsonSlurper
 import org.apache.http.HttpResponse
 import org.apache.http.NameValuePair
@@ -12,16 +11,13 @@ import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.POST
+
 import javax.annotation.PreDestroy
 
 class OauthService {
 
     LinkGenerator grailsLinkGenerator
     GrailsApplication grailsApplication
-
-    private parseWithHttpBuilder = false
 
     @Lazy
     private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
@@ -48,41 +44,23 @@ class OauthService {
                 redirect_uri: callback
         ]
 
-        if (parseWithHttpBuilder) {
-            new HTTPBuilder(oauthProviderAccessTokenUrl).request(POST, JSON) {
-                uri.query = params
+        HttpPost httpPost = new HttpPost(oauthProviderAccessTokenUrl)
+        List<NameValuePair> postParams = params.collect {
+            new BasicNameValuePair(it.key, it.value)
+        }
 
-                response.success = { resp, json ->
-                    json
-                }
+        httpPost.entity = new UrlEncodedFormEntity(postParams)
+        HttpResponse response = httpClient.execute(httpPost)
 
-                response.failure = { resp, json ->
-                    log.error "HTTP error code: $resp.status, status line: $resp.statusLine, "
+        try {
+            String responseBody = response.entity.content.text
+            log.debug "Access token response: $responseBody"
+            EntityUtils.consume(response.entity)
 
-                    json.each { key, value ->
-                        log.error "$key: $value"
-                    }
-                }
-            }
-        } else {
-            HttpPost httpPost = new HttpPost(oauthProviderAccessTokenUrl)
-            List<NameValuePair> postParams = params.collect {
-                new BasicNameValuePair(it.key, it.value)
-            }
+            new JsonSlurper().parseText(responseBody)
 
-            httpPost.entity = new UrlEncodedFormEntity(postParams)
-            HttpResponse response = httpClient.execute(httpPost)
-
-            try {
-                String responseBody = response.entity.content.text
-                log.debug "Access token response: $responseBody"
-                EntityUtils.consume(response.entity)
-
-                new JsonSlurper().parseText(responseBody)
-
-            } finally {
-                httpPost.releaseConnection()
-            }
+        } finally {
+            httpPost.releaseConnection()
         }
     }
 
