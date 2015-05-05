@@ -114,6 +114,10 @@
 
     <g:if test="${session.accessToken}">
         <oauth:renderToken/>
+
+        <h2>
+            <a href="${grailsApplication.config.oauthProvider.baseUrl}/oauth/token?grant_type=refresh_token&refresh_token=${session.accessToken.refresh_token}&client_id=my-client&scope=read">Refresh Token</a>
+        </h2>
     </g:if>
     <g:else>
         An access token has not been issued to this client.
