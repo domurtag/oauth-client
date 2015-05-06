@@ -78,6 +78,16 @@
             margin-top: 0;
         }
     }
+
+    #refresh {
+        margin-top: 20px;
+    }
+
+    #refresh button {
+        font-size: 16px;
+        background-color: #EEEEEE;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -116,7 +126,7 @@
         <oauth:renderToken/>
 
         <h2>
-            <a href="${grailsApplication.config.oauthProvider.baseUrl}/oauth/token?grant_type=refresh_token&refresh_token=${session.accessToken.refresh_token}&client_id=my-client&scope=read">Refresh Token</a>
+            <g:link controller="auth" action="refreshToken">Refresh Token</g:link>
         </h2>
     </g:if>
     <g:else>

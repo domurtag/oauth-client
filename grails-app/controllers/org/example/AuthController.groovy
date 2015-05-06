@@ -26,4 +26,21 @@ class AuthController {
         session.removeAttribute('accessToken')
         redirect uri: '/'
     }
+
+    def refreshToken() {
+
+        if (session.accessToken) {
+             def response = oauthService.refreshToken(session.accessToken.refresh_token)
+
+            if (response.error) {
+                log.error "Access token refresh failed: $response"
+
+            } else {
+                session.accessToken = response
+                log.info "Refreshed access token $response"
+            }
+        }
+
+        redirect uri: '/'
+    }
 }

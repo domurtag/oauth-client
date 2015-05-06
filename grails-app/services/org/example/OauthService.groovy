@@ -20,7 +20,7 @@ class OauthService {
     GrailsApplication grailsApplication
 
     @Lazy
-    private oauthProvider = grailsApplication.config.oauthProvider.baseUrl
+    private String oauthProviderUrl = grailsApplication.config.oauthProvider.baseUrl + '/oauth/token'
 
     private HttpClient httpClient = new DefaultHttpClient()
 
@@ -32,7 +32,6 @@ class OauthService {
     def exchangeAuthCode(String authCode) {
 
         def callback = grailsLinkGenerator.link(controller: 'auth', action: 'callback', absolute: true)
-        def oauthProviderAccessTokenUrl = "$oauthProvider/oauth/token"
 
         def params = [
                 // the scope param is not required by the OAuth spec. it's a workaround for this issue
@@ -44,7 +43,7 @@ class OauthService {
                 redirect_uri: callback
         ]
 
-        HttpPost httpPost = new HttpPost(oauthProviderAccessTokenUrl)
+        HttpPost httpPost = new HttpPost(oauthProviderUrl)
         List<NameValuePair> postParams = params.collect {
             new BasicNameValuePair(it.key, it.value)
         }
@@ -55,6 +54,34 @@ class OauthService {
         try {
             String responseBody = response.entity.content.text
             log.debug "Access token response: $responseBody"
+            EntityUtils.consume(response.entity)
+
+            new JsonSlurper().parseText(responseBody)
+
+        } finally {
+            httpPost.releaseConnection()
+        }
+    }
+
+    def refreshToken(String refreshToken) {
+        def params = [
+                grant_type   : 'refresh_token',
+                refresh_token: refreshToken,
+                client_id    : 'my-client',
+                scope        : 'read'
+        ]
+
+        HttpPost httpPost = new HttpPost(oauthProviderUrl)
+        List<NameValuePair> postParams = params.collect {
+            new BasicNameValuePair(it.key, it.value)
+        }
+
+        httpPost.entity = new UrlEncodedFormEntity(postParams)
+        HttpResponse response = httpClient.execute(httpPost)
+
+        try {
+            String responseBody = response.entity.content.text
+            log.debug "Refresh token response: $responseBody"
             EntityUtils.consume(response.entity)
 
             new JsonSlurper().parseText(responseBody)
