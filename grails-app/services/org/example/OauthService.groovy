@@ -44,24 +44,7 @@ class OauthService {
                 redirect_uri : callback
         ]
 
-        HttpPost httpPost = new HttpPost(oauthProviderUrl)
-        List<NameValuePair> postParams = params.collect {
-            new BasicNameValuePair(it.key, it.value)
-        }
-
-        httpPost.entity = new UrlEncodedFormEntity(postParams)
-        HttpResponse response = httpClient.execute(httpPost)
-
-        try {
-            String responseBody = response.entity.content.text
-            log.debug "Access token response: $responseBody"
-            EntityUtils.consume(response.entity)
-
-            new JsonSlurper().parseText(responseBody)
-
-        } finally {
-            httpPost.releaseConnection()
-        }
+        getJsonResponse(params)
     }
 
     def refreshToken(String refreshToken) {
@@ -73,6 +56,10 @@ class OauthService {
                 scope        : 'read'
         ]
 
+        getJsonResponse(params)
+    }
+
+    private getJsonResponse(Map<String, String> params) {
         HttpPost httpPost = new HttpPost(oauthProviderUrl)
         List<NameValuePair> postParams = params.collect {
             new BasicNameValuePair(it.key, it.value)
@@ -83,7 +70,7 @@ class OauthService {
 
         try {
             String responseBody = response.entity.content.text
-            log.debug "Refresh token response: $responseBody"
+            log.debug "OAuth response: $responseBody"
             EntityUtils.consume(response.entity)
 
             new JsonSlurper().parseText(responseBody)
@@ -92,6 +79,7 @@ class OauthService {
             httpPost.releaseConnection()
         }
     }
+
 
     @PreDestroy
     private void close() {
