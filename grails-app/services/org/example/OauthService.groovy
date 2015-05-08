@@ -36,7 +36,7 @@ class OauthService {
         def params = [
                 // the scope param is not required by the OAuth spec. it's a workaround for this issue
                 // https://github.com/bluesliverx/grails-spring-security-oauth2-provider/issues/64
-                scope        : 'read',
+                scope        : 'all',
                 grant_type   : 'authorization_code',
                 code         : authCode,
                 client_id    : 'my-client',
@@ -53,7 +53,7 @@ class OauthService {
                 refresh_token: refreshToken,
                 client_id    : 'my-client',
                 client_secret: 'secret',
-                scope        : 'read'
+                scope        : 'all'
         ]
 
         getJsonResponse(params)
