@@ -4,19 +4,19 @@ class AuthController {
 
     OauthService oauthService
 
-    static allowedMethods = [callback: 'GET', clearToken: 'GET']
+    static allowedMethods = [callback: 'GET', clearToken: 'GET', refreshToken: 'GET']
 
     /**
-     * The callback action for OAuth2 login
+     * The authorization code callback
      */
-    def callback(String code) {
-        def response = oauthService.exchangeAuthCode(code)
+    def callback(AuthCodeResponse authCodeResponse) {
 
-        if (response.error) {
-            log.error "Auth code exchange failed: $response"
+        if (!authCodeResponse.error) {
+            session.accessToken = oauthService.exchangeAuthCode(authCodeResponse.code)
+            log.info "Exchanged auth code $authCodeResponse.code for access token $session.accessToken"
+
         } else {
-            session.accessToken = response
-            log.info "Exchanged auth code $code for access token $response"
+            log.error "Auth code request failed: ${[error: authCodeResponse.error, error_description: authCodeResponse.error_description]}"
         }
 
         redirect uri: '/'
@@ -43,4 +43,10 @@ class AuthController {
 
         redirect uri: '/'
     }
+}
+
+class AuthCodeResponse {
+    String code
+    String error
+    String error_description
 }
