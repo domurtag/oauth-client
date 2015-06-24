@@ -130,8 +130,34 @@
         </h2>
     </g:if>
     <g:else>
-        An access token has not been issued to this client.
+        An access token has not been issued to this client. Click the link above to initiate the OAuth login.
     </g:else>
+
+    <h2 style="margin-top: 30px;">Kerp Instructions</h2>
+    <p>
+        To use Kerp as the provider for this client, make sure the client is runnin on port 9090 and replace the client
+        saved by the provider in <code>BootStrap.groovy</code> with the following:
+    </p>
+
+    <p>
+        <code>
+            <pre>
+
+final String oauthClientId = 'my-client'
+
+if (!Client.countByClientId(oauthClientId)) {
+    new Client(
+        clientId: oauthClientId,
+        authorizedGrantTypes: ['authorization_code', 'refresh_token'],
+        authorities: [clientRole.authority],
+        scopes: ['all'],
+        redirectUris: ['http://localhost:9090/oauth-client/auth/callback'],
+        clientSecret: 'secret'
+    ).save(flush: true, failOnError: true)
+}
+            </pre>
+        </code>
+    </p>
 </div>
 </body>
 </html>
