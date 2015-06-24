@@ -18,7 +18,7 @@ class OauthTokenTagLib {
 
         use (TimeCategory) {
             Integer expirySeconds = tokenDetails.expires_in as Integer
-            out << expirySeconds.seconds.from.now
+            out << expirySeconds?.seconds?.from?.now
         }
 
         out << "<h2>Refesh Token</h2>"
