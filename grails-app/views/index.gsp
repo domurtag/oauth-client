@@ -128,6 +128,9 @@
 
     <g:if test="${session.accessToken}">
         <oauth:renderToken/>
+        <h2>
+            <g:link controller="auth" action="clearToken">Clear Token</g:link>
+        </h2>
 
         <h2>
             <g:link controller="auth" action="refreshToken">Refresh Token</g:link>
