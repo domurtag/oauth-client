@@ -16,10 +16,10 @@ class AuthController {
 
             if (response.access_token) {
                 session.accessToken = response
-                log.info "Exchanged auth code $authCodeResponse.code for access token $session.access_token"
+                log.info "Exchanged auth code $authCodeResponse.code for access token $session.accessToken.access_token"
 
             } else {
-                log.error "Auth code exchange failed with response: $response"
+                log.error "Access token request failed: $response"
             }
         } else {
             log.error "Auth code request failed: ${[error: authCodeResponse.error, error_description: authCodeResponse.error_description]}"
