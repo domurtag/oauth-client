@@ -88,6 +88,10 @@
         background-color: #EEEEEE;
         font-weight: bold;
     }
+
+    .top-spacer {
+        margin-top: 20px;
+    }
     </style>
 </head>
 
@@ -119,7 +123,7 @@
 <div id="page-body" role="main">
     <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true)}"/>
     <h2>
-        <a href="http://127.0.0.1:9000/#/oauth?response_type=code&client_id=my-client&scope=all&redirect_uri=${redirectUrl}">OAuth Login</a>
+        <a href="http://127.0.0.1:9000/#/oauth?response_type=code&client_id=grails-client&scope=profile&redirect_uri=${redirectUrl}">OAuth Login</a>
     </h2>
 
     <g:if test="${session.accessToken}">
@@ -133,28 +137,23 @@
         An access token has not been issued to this client. Click the link above to initiate the OAuth login.
     </g:else>
 
-    <h2 style="margin-top: 30px;">Kerp Instructions</h2>
+    <h2 class="top-spacer">Kerp Provider</h2>
     <p>
-        To use Kerp as the provider for this client, make sure the client is runnin on port 9090 and replace the client
-        saved by the provider in <code>BootStrap.groovy</code> with the following:
+        To use Kerp as the provider for this client, make sure the client is running on port 9090 and register a client
+        in the provider's <code>BootStrap.groovy</code> with the following configuration:
     </p>
 
-    <p>
+    <p class="top-spacer">
         <code>
             <pre>
-
-final String oauthClientId = 'my-client'
-
-if (!Client.countByClientId(oauthClientId)) {
-    new Client(
-        clientId: oauthClientId,
-        authorizedGrantTypes: ['authorization_code', 'refresh_token'],
-        authorities: [clientRole.authority],
-        scopes: ['all'],
-        redirectUris: ['http://localhost:9090/oauth-client/auth/callback'],
-        clientSecret: 'secret'
-    ).save(flush: true, failOnError: true)
-}
+new Client(
+    clientId: 'grails-client',
+    authorizedGrantTypes: ['authorization_code', 'refresh_token'],
+    authorities: ['ROLE_CLIENT'],
+    scopes: ['profile', 'scenario', 'snapshot', 'assessment'],
+    redirectUris: ['http://localhost:9090/oauth-client/auth/callback'],
+    clientSecret: 'secret'
+)
             </pre>
         </code>
     </p>
