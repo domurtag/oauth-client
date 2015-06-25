@@ -122,8 +122,10 @@
 
 <div id="page-body" role="main">
     <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true)}"/>
+    <g:set var="scopes" value="${'profile snapshot'.encodeAsURL()}"/>
+
     <h2>
-        <a href="http://127.0.0.1:9000/#/oauth?response_type=code&client_id=grails-client&scope=profile&redirect_uri=${redirectUrl}">OAuth Login</a>
+        <a href="http://127.0.0.1:9000/#/oauth?response_type=code&client_id=grails-client&scope=${scopes}&redirect_uri=${redirectUrl}">OAuth Login</a>
     </h2>
 
     <g:if test="${session.accessToken}">
