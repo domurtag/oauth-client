@@ -21,7 +21,7 @@ class OauthService {
 
     private final secret = 'L8ORZ7FzLhU4nYRkzZgmPg4W8y6QmjnGSZi1AL1J+2k='
     @Lazy
-    private String oauthProviderUrl = grailsApplication.config.oauthProvider.baseUrl + '/oauth/token'
+    private String oauthProviderUrl = grailsApplication.config.oauthProvider.baseUrl + '/token'
 
     private HttpClient httpClient = new DefaultHttpClient()
 
