@@ -10,13 +10,14 @@ class OauthController {
      * The callback action for OAuth2 login
      */
     def callback(String code) {
-        def response = oauthService.exchangeAuthCode(code)
 
-        if (response.error) {
-            log.error "Auth code exchange failed: $response"
+        if (params.error) {
+            log.error "Auth code exchange failed: $params.error"
         } else {
-            session.accessToken = response
-            log.info "Exchanged auth code $code for access token $response"
+            def accessTokenResponse = oauthService.exchangeAuthCode(code)
+
+            session.accessToken = accessTokenResponse
+            log.info "Exchanged auth code $code for access token $accessTokenResponse"
         }
 
         redirect uri: '/'

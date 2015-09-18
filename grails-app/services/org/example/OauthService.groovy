@@ -19,6 +19,7 @@ class OauthService {
     LinkGenerator grailsLinkGenerator
     GrailsApplication grailsApplication
 
+    private final secret = 'L8ORZ7FzLhU4nYRkzZgmPg4W8y6QmjnGSZi1AL1J+2k='
     @Lazy
     private String oauthProviderUrl = grailsApplication.config.oauthProvider.baseUrl + '/oauth/token'
 
@@ -31,16 +32,16 @@ class OauthService {
      */
     def exchangeAuthCode(String authCode) {
 
-        def callback = grailsLinkGenerator.link(controller: 'oauth', action: 'callback', absolute: true)
+        String callback = grailsLinkGenerator.link(controller: 'oauth', action: 'callback', absolute: true)
 
         def params = [
                 // the scope param is not required by the OAuth spec. it's a workaround for this issue
                 // https://github.com/bluesliverx/grails-spring-security-oauth2-provider/issues/64
-                scope        : 'read',
+                scope        : callback,
                 grant_type   : 'authorization_code',
                 code         : authCode,
-                client_id    : 'my-client',
-                client_secret: 'secret',
+                client_id    : 'BetterOffLocalDev',
+                client_secret: secret,
                 redirect_uri : callback
         ]
 
@@ -51,8 +52,8 @@ class OauthService {
         def params = [
                 grant_type   : 'refresh_token',
                 refresh_token: refreshToken,
-                client_id    : 'my-client',
-                client_secret: 'secret',
+                client_id    : 'BetterOffLocalDev',
+                client_secret: secret,
                 scope        : 'read'
         ]
 
