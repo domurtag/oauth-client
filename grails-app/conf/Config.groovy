@@ -89,6 +89,7 @@ grails.hibernate.osiv.readonly = false
 
 environments {
     development {
+        grails.serverURL = "https://api3.enfield.betteroff.org.uk:8443"
         grails.logging.jul.usebridge = true
     }
     production {
@@ -125,5 +126,5 @@ log4j.main = {
 }
 
 
-//oauthProvider.baseUrl = 'http://localhost:8080/kerp'
-oauthProvider.baseUrl = 'http://localhost:8080/oauth2-provider'
+oauthProvider.baseUrl = 'https://authdev.dev.enfield.gov.uk/identity/issue/oauth2'
+grails.app.context = "/"

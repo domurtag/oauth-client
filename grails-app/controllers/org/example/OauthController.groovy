@@ -1,6 +1,6 @@
 package org.example
 
-class AuthController {
+class OauthController {
 
     OauthService oauthService
 

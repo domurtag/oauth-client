@@ -117,16 +117,16 @@
 </div>
 
 <div id="page-body" role="main">
-    <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true)}"/>
+    <g:set var="redirectUrl" value="${g.createLink(controller: 'oauth', action: 'callback', absolute: true)}"/>
     <h2>
-        <a href="${grailsApplication.config.oauthProvider.baseUrl}/oauth/authorize?response_type=code&client_id=my-client&scope=read&redirect_uri=${redirectUrl}">OAuth Login</a>
+        <a href="${grailsApplication.config.oauthProvider.baseUrl}/authorize?response_type=code&client_id=BetterOffLocalDev&scope=${redirectUrl}&redirect_uri=${redirectUrl}">OAuth Login</a>
     </h2>
 
     <g:if test="${session.accessToken}">
         <oauth:renderToken/>
 
         <h2>
-            <g:link controller="auth" action="refreshToken">Refresh Token</g:link>
+            <g:link controller="oauth" action="refreshToken">Refresh Token</g:link>
         </h2>
     </g:if>
     <g:else>

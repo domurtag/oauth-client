@@ -31,7 +31,7 @@ class OauthService {
      */
     def exchangeAuthCode(String authCode) {
 
-        def callback = grailsLinkGenerator.link(controller: 'auth', action: 'callback', absolute: true)
+        def callback = grailsLinkGenerator.link(controller: 'oauth', action: 'callback', absolute: true)
 
         def params = [
                 // the scope param is not required by the OAuth spec. it's a workaround for this issue
