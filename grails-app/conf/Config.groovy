@@ -124,4 +124,4 @@ log4j.main = {
     appNamespaces.each { debug it }
 }
 
-oauthProvider.baseUrl = 'http://localhost:8080/kerp'
+oauthProvider.baseUrl = 'http://localhost:8080'
