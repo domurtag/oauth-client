@@ -96,7 +96,6 @@
 </head>
 
 <body>
-<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 
 <div id="status" role="complementary">
     <h1>Application Status</h1>
@@ -121,7 +120,7 @@
 </div>
 
 <div id="page-body" role="main">
-    <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true)}"/>
+    <g:set var="redirectUrl" value="${g.createLink(controller: 'auth', action: 'callback', absolute: true, params: [foo: 'bar'])}"/>
     <g:set var="scopes" value="${'profile snapshot'.encodeAsURL()}"/>
 
     <h2>

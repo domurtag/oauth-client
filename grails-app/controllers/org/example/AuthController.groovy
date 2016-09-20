@@ -11,15 +11,15 @@ class AuthController {
      */
     def callback(AuthCodeResponse authCodeResponse) {
 
-        if (!authCodeResponse.error) {
-            def response = oauthService.exchangeAuthCode(authCodeResponse.code)
+        if (authCodeResponse.code) {
+            def accessTokenResponse = oauthService.exchangeAuthCode(authCodeResponse.code)
 
-            if (response.access_token) {
-                session.accessToken = response
+            if (accessTokenResponse.access_token) {
+                session.accessToken = accessTokenResponse
                 log.info "Exchanged auth code $authCodeResponse.code for access token $session.accessToken.access_token"
 
             } else {
-                log.error "Access token request failed: $response"
+                log.error "Access token request failed: $accessTokenResponse"
             }
         } else {
             log.error "Auth code request failed: ${[error: authCodeResponse.error, error_description: authCodeResponse.error_description]}"
