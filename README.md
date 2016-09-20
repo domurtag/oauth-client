@@ -1,3 +1,6 @@
+## Dependencies
+This project must be run with Grails 2.4.4 on JDK7
+
 ## OAuth Demo
  - Start the [OAuth provider app](https://github.com/domurtag/oauth2-provider) with `grails run-app`
  - Start this app (an OAuth client) on port 9090 with `grails run-app -Dserver.port=9090`

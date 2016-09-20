@@ -32,3 +32,5 @@
 *.iml
 
 .DS_Store
+
+.slcache/
